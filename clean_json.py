@@ -2,8 +2,10 @@
 from datetime import datetime
 import json
 import pandas as pd
+import numpy as np
+pd.set_option('display.max_columns', None)
 
-#%% json load/save
+#%% functions
 def get_json(filepath):
   with open(filepath, encoding='utf-8') as f:
     return json.load(f)
@@ -12,15 +14,42 @@ def save_json(data, filepath):
   with open(filepath, 'w') as fp:
     json.dump(data, fp)
 
+def make_all_cards_df():
+  all_json = get_json('datasets/all_cards.json')
+  cards = []
+  for k,v in all_json.items():
+    for card in v['cards']:
+      card['releaseDate'] = v['releaseDate']
+      card['setName'] = v['name']
+      card['setType'] = v['type']
+      card['setIsOnlineOnly'] = v['isOnlineOnly']
+      card['setBaseSetSize'] = v['baseSetSize']
+      card['setTotalSetSize'] = v['totalSetSize']
+
+  for k,v in all_json.items():
+    cards.extend(v['cards'])
+  return pd.DataFrame.from_dict(cards)
+
 # standard_json = get_json('kaggledata/Standard.json')
 # standard_cards_json = get_json('kaggledata/StandardCards.json')
-all_json = get_json('datasets/all_cards.json')
+# all_json = get_json('datasets/all_cards.json')
 
 #%%
-# print(all_json['10E']['cards'][0].pop('foreignData', None))
+df = make_all_cards_df()
+df[(df['isReprint'].isna()) & (df['setIsOnlineOnly'] == False) & (df['type'].str.contains('Land'))]
+
+#%% list all types
+types = set()
 for k in all_json.keys():
-  print(all_json[k]['releaseDate'])
-  
+  types.add(all_json[k]['type'])
+print(types)
+
+#%%
+standard = ['KLD', 'ZEN', 'TBTH']
+# print(all_json['10E']['cards'][0].pop('foreignData', None))
+for k,v in all_json['KLD'].items():
+  display(k, v)
+
 #%%
 l = [datetime.strptime(all_json[k]['releaseDate'], '%Y-%m-%d') for k in all_json.keys()]
 l.sort()
@@ -35,4 +64,3 @@ for k in all_json.keys():
 save_json(all_json, 'datasets/all_cards.json')
 
 #%%
-pd.DataFrame.from_dict(standard_cards_json)
