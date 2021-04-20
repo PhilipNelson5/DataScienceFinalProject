@@ -28,7 +28,10 @@ def make_all_cards_df():
 
   for k,v in all_json.items():
     cards.extend(v['cards'])
-  return pd.DataFrame.from_dict(cards)
+
+  df = pd.DataFrame.from_dict(cards)
+  df['releaseDate'] = pd.to_datetime(df['releaseDate'], format='%Y-%m-%d')
+  return df
 
 # standard_json = get_json('kaggledata/Standard.json')
 # standard_cards_json = get_json('kaggledata/StandardCards.json')
@@ -36,7 +39,10 @@ def make_all_cards_df():
 
 #%%
 df = make_all_cards_df()
-df[(df['isReprint'].isna()) & (df['setIsOnlineOnly'] == False) & (df['type'].str.contains('Land'))]
+# df[(df['isReprint'].isna()) & (df['setIsOnlineOnly'] == False) & (df['type'].str.contains('Land'))]
+
+#%%
+df[(df['isReprint'].isna()) & (df['name'] == 'Castle Vantress')]
 
 #%% list all types
 types = set()
