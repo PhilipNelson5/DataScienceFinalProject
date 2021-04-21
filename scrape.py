@@ -8,12 +8,12 @@ def scrape_metagame_matrix_soup(soup):
     table = soup.find_all(id=id)[0].find_all('li')
     deck_names = []
     for div in table[0].find_all('div', class_='name'):
-        deck_names.append(div.text)
+        deck_names.append(div.text.lower())
 
     decks = {}
     for i, row in enumerate(table[1:-1]):
         divs = row.find_all('div')
-        row_name = divs[0].find('div', class_='name').text
+        row_name = divs[0].find('div', class_='name').text.lower()
         stats = divs[0].find_all('div', class_='stats')
         decks[row_name] = {
             'matches': stats[0].find('span').text,
@@ -47,8 +47,13 @@ def scrape_deck_soup(soup):
     lis = soup.find('ul', class_='sampledecklist').find_all('li')
     deck = []
     for li in lis[1:]:
+        try:
+            if 'sideboard' in li['class']: break
+        except: pass
+
+        # if 'sideboard' in li.attrs['class']: break
         if 'data-name' in li.attrs:
-            name = li.attrs['data-name']
+            name = li.attrs['data-name'].split('//')[0].strip().lower()
             count = li.attrs['data-qt']
             deck.append((name, count))
     return deck
@@ -59,13 +64,14 @@ def scrape_deck_url(url):
     soup = BeautifulSoup(r.text, 'html.parser')
     return scrape_deck_soup(soup)
 
-
 #%%
-filepath = "metagame.html"
-matrix = scrape_metagame_matrix_filepath(filepath)
-print(matrix)
+if __name__ == "__main__":
+#%%
+    filepath = "metagame.html"
+    matrix = scrape_metagame_matrix_filepath(filepath)
+    print(matrix)
 
 # %%
-url = 'https://mtgmeta.io/decks/19010'
-deck = scrape_deck_url(url)
-print(deck)
+    url = 'https://mtgmeta.io/decks/19010'
+    deck = scrape_deck_url(url)
+    print(deck)
