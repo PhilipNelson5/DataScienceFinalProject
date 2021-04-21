@@ -37,7 +37,7 @@ def scrape_metagame_matrix_soup(soup):
     return decks
         
 def scrape_metagame_matrix_filepath(filepath):
-    with open("metagame.html") as fp:
+    with open(filepath) as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         return scrape_metagame_matrix_soup(soup)
     
@@ -45,7 +45,8 @@ def scrape_metagame_matrix_filepath(filepath):
 #%%
 def scrape_deck_soup(soup):
     lis = soup.find('ul', class_='sampledecklist').find_all('li')
-    deck = []
+    names = []
+    counts = []
     for li in lis[1:]:
         try:
             if 'sideboard' in li['class']: break
@@ -55,8 +56,11 @@ def scrape_deck_soup(soup):
         if 'data-name' in li.attrs:
             name = li.attrs['data-name'].split('//')[0].strip().lower()
             count = li.attrs['data-qt']
-            deck.append((name, count))
-    return deck
+            names.append(name)
+            counts.append(count)
+    
+    price = float(soup.find(id='deckstats').find_all('li')[1].text.replace('$',''))
+    return names, counts, price
 
 def scrape_deck_url(url):
     r = requests.get(url)
