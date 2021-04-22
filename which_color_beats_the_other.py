@@ -9,7 +9,12 @@ cards = make_all_cards_df()
 
 
 #%%
-filepath = "html/2020-06-01-2020-08-03.html"
+filepaths = [
+  'html/2020-06-01-2020-08-03.html', 'html/2020-08-03-2020-09-17.html',
+  'html/2020-09-17-2020-09-28.html', 'html/2020-09-28-2020-10-12.html',
+  'html/2020-10-12-20201-04-15.html'
+]
+filepath = filepaths[0]
 matrix = scrape_metagame_matrix_filepath(filepath)
 deck_urls = [v['link'] for v in matrix.values()]
 decks = [scrape_deck_url(url) for url in deck_urls]
@@ -17,18 +22,10 @@ deck_dfs = [
   get_deck(cards, card_names, card_counts)
     for card_names, card_counts, _ in decks
 ]
-#%%
 deck_mana_costs = [mana_cost_deck(deck) for deck in deck_dfs]
-#%%
-deck_mana_costs = []
-for i, deck in enumerate(deck_dfs):
-  try:
-    mana_cost_deck(deck)
-  except:
-    print(i)
 
 #%%
-deck_dfs[0][deck_dfs[0].name == 'expansion'].purchaseUrls.iloc[0]['tcgplayer']
+deck_mana_costs
 
 
 #%%

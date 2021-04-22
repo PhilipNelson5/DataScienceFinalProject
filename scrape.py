@@ -22,16 +22,25 @@ def scrape_metagame_matrix_soup(soup):
             'rivals': {}
         }
         
-        for j, col in enumerate(row.find_all('div', class_='color')):
+        for j, col in enumerate(row.find_all('div', class_='square')[1:-1]):
             if i == j: continue
             col_name = deck_names[j]
+
+            if 'empty' in col['class']:
+                decks[row_name]['rivals'][col_name] = {
+                    'confidence_interval': '0%-92%',
+                    'performance_meta': 0,
+                    'match_count': 0
+                }
+                continue
+
             confidence_int2 = col.find('div', class_='dmatchr').text
             performance_meta = col.find('div', class_='dperf').text
             match_count = col.find('div', class_='dmatch').text
             decks[row_name]['rivals'][col_name] = {
                 'confidence_interval': confidence_int2,
-                'performance_meta': performance_meta,
-                'match_count': match_count
+                'performance_meta': float(performance_meta),
+                'match_count': float(match_count)
             }
 
     return decks
@@ -71,11 +80,16 @@ def scrape_deck_url(url):
 #%%
 if __name__ == "__main__":
 #%%
-    filepath = "metagame.html"
+    filepath = "html/2019-11-18-202006-01.html"
     matrix = scrape_metagame_matrix_filepath(filepath)
-    print(matrix)
+    # print(matrix)
+    matrix['azorius blink']['rivals']['temur reclamation']['performance_meta']
+    print(len(matrix))
+    print(len(matrix['azorius blink']['rivals']))
 
-# %%
+#%%
     url = 'https://mtgmeta.io/decks/19010'
     deck = scrape_deck_url(url)
     print(deck)
+    
+#%%
