@@ -38,6 +38,10 @@ for i, url in enumerate(deck_urls):
     prices.append(deck_price)
     sleep(1)
     
+meta_performance = []
+for matrix in matrixs:
+    for v in matrix.values():
+        meta_performance.append(float(v['confidence_interval'].split(' ')[0].replace('%','')))
 #%%
 print(len(decks) - len(bad))
 print(len(decks))
@@ -57,9 +61,11 @@ save(decks, 'datasets/all_decks.pkl')
 save(prices, 'datasets/all_prices.pkl')
 save(bad, 'datasets/all_bad.pkl')
 save(matrixs, 'datasets/all_matrixs.pkl')
+save(meta_performance, 'datasets/all_meta_performance.pkl')
 
 #%%
 decks = load('datasets/all_decks.pkl')
 prices = load('datasets/all_prices.pkl')
 bad = load('datasets/all_bad.pkl')
 matrixs = load('datasets/all_matrixs.pkl')
+meta_performance = load('datasets/all_meta_performance.pkl')
