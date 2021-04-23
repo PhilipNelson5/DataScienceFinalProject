@@ -79,3 +79,15 @@ def mana_cost_deck(deck):
     cost += mana_cost_card(card) * card['count']
   return cost
 
+
+# [wild, white, blue, black, red, green]
+def mana_colors_card(card):
+  cost = mana_cost_card(card)
+  return np.array([1 if x > 0 else 0 for x in cost])
+
+
+def mana_colors_deck(deck):
+  colors = np.zeros(6)
+  for _, card in deck.iterrows():
+    colors += mana_colors_card(card) * card['count']
+  return colors

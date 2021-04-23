@@ -63,6 +63,13 @@ l
 
 #%% remove foreign data
 all_json = get_json('kaggledata/AllPrintings.json')
+
+#%%
+for k in all_json.keys():
+  print(k)
+
+
+#%%
 for k in all_json.keys():
   print(k)
   for card in all_json[k]['cards']:

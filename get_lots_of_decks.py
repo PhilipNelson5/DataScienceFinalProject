@@ -24,6 +24,12 @@ for filepath in filepaths:
     deck_urls += [v['link'] for v in matrixs[-1].values()]
 
 #%%
+deck_urls = []
+deck_names = []
+for matrix in matrixs:
+  deck_urls += [v['link'] for v in matrix.values()]
+  deck_names += list(matrix.keys())
+  
 decks = []
 prices = []
 bad = []
@@ -54,6 +60,8 @@ save(prices, 'datasets/all_prices.pkl')
 save(bad, 'datasets/all_bad.pkl')
 save(matrixs, 'datasets/all_matrixs.pkl')
 save(meta_performance, 'datasets/all_meta_performance.pkl')
+save(deck_urls, 'datasets/all_deck_urls.pkl')
+save(deck_names, 'datasets/all_deck_names.pkl')
 
 #%%
 decks = load('datasets/all_decks.pkl')
@@ -61,3 +69,5 @@ prices = load('datasets/all_prices.pkl')
 bad = load('datasets/all_bad.pkl')
 matrixs = load('datasets/all_matrixs.pkl')
 meta_performance = load('datasets/all_meta_performance.pkl')
+deck_urls = load('datasets/all_deck_urls.pkl')
+deck_names = load('datasets/all_deck_names.pkl')
