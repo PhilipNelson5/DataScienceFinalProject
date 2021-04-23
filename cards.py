@@ -1,7 +1,7 @@
 #%% imports
 import json
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 #%% functions
 def get_json(filepath):

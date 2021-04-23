@@ -1,9 +1,10 @@
 #%%
 from cards import *
+from pickle_helper import *
 from scrape import *
 from time import sleep
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 pd.set_option('display.max_columns', None)
 cards = make_all_cards_df()
@@ -47,15 +48,6 @@ print(len(decks) - len(bad))
 print(len(decks))
 
 #%%
-import pickle
-def save(obj, file_name):
-    with open(file_name, 'wb') as fp:
-        pickle.dump(obj, fp)
-
-def load(file_name):
-    with open(file_name, 'rb') as fp:
-        obj = pickle.load(fp)
-    return obj
 
 save(decks, 'datasets/all_decks.pkl')
 save(prices, 'datasets/all_prices.pkl')

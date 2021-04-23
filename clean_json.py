@@ -1,8 +1,8 @@
 #%% imports
 from datetime import datetime
 import json
-import pandas as pd
 import numpy as np
+import pandas as pd
 pd.set_option('display.max_columns', None)
 
 #%% functions

@@ -1,16 +1,7 @@
 #%%
 from matplotlib import pyplot as plt
-import pickle
+from pickle_helper import *
 from scipy import stats
-
-def save(obj, file_name):
-    with open(file_name, 'wb') as fp:
-        pickle.dump(obj, fp)
-
-def load(file_name):
-    with open(file_name, 'rb') as fp:
-        obj = pickle.load(fp)
-    return obj
 
 #%%
 decks = load('datasets/all_decks.pkl')

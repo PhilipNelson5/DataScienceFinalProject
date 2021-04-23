@@ -1,8 +1,7 @@
 #%%
-from matplotlib import pyplot as plt
-import pickle
-from scipy import stats
 from cards import *
+from matplotlib import pyplot as plt
+from scipy import stats
 
 pd.set_option('display.max_columns', None)
 cards = make_all_cards_df()
